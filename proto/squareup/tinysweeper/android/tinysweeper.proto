@@ -1,0 +1,70 @@
+syntax = 'proto3';
+
+package squareup.tinysweeper.android;
+
+option java_package = "com.squareup.protos.tinysweeper.android";
+
+/**
+ * Identifier of a given attested device.
+ */
+message Identifier {
+    /**
+     * Unstructured OS version string
+     */
+    string os_version = 1;
+
+    /**
+     * Android API version number
+     */
+    int64 api_level = 2;
+
+    /**
+     * Timestamp of the present android security patch.
+     */
+    string security_patch = 3;
+
+    /**
+     * Unix timestamp of the time that this identifier was created.
+     */
+    uint64 creation_ts = 4;
+
+    /**
+     * An identifier of the latest boot instance.
+     */
+    string boot_id = 5;
+
+    /**
+     * An identifier of the runnng device.
+     */
+    string device_id = 6;
+}
+
+/**
+ * Individual detections
+ */
+message Detection {
+    enum Type {
+        UNKNOWN                = 0;
+        DEVELOPER_MODE_ENABLED = 1;
+    }
+    Type type = 1;
+
+    uint64 last_evaluation_s = 2;
+    uint64 triggered_at_s    = 3;
+    string debug_message     = 4;
+}
+
+message PlayIntegrityAttestation {
+    bytes  token                         = 1;
+    uint64 integrity_nonce_created_at_ms = 2;
+    string package_name                  = 3;
+}
+
+message Attestation {
+    uint64 client_current_time_s = 1;
+
+    Identifier         identifier = 2;
+    repeated Detection detections = 3;
+
+    PlayIntegrityAttestation integrity_token = 10;
+}

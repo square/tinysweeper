@@ -1,0 +1,16 @@
+directories:
+  android/tsengine/src/main
+  android/tsengine/src/test
+  proto/squareup/lando/challenge
+  proto/squareup/tinysweeper/android
+
+# Automatically includes all relevant targets under the 'directories' above
+derive_targets_from_directories: true
+
+targets:
+  # If source code isn't resolving, add additional targets that compile it here
+
+additional_languages:
+  kotlin
+
+android_sdk_platform: android-33

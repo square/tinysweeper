@@ -1,0 +1,33 @@
+load("@rules_jvm_external//:defs.bzl", "artifact")
+load("@rules_jvm_external//:kt_defs.bzl", "kt_jvm_export")
+load("@rules_kotlin//kotlin:android.bzl", "kt_android_library")
+load("//android:versions.bzl", "TSENGINE_VERSION")
+
+package(default_visibility = ["//visibility:public"])
+
+kt_android_library(
+    name = "tsengine_lib",
+    srcs = glob(["java/**"]),
+    deps = [
+        "//proto/squareup/lando/challenge:challenge_java_proto",
+        "//proto/squareup/tinysweeper/android:tinysweeper_java_proto",
+        artifact("com.google.protobuf:protobuf-java"),
+        artifact("com.google.android.play:integrity"),
+        artifact("com.google.android.gms:play-services-base"),
+        artifact("org.jetbrains.kotlinx:kotlinx-coroutines-play-services"),
+        artifact("org.jetbrains.kotlinx:kotlinx-coroutines-core"),
+        artifact("com.squareup.retrofit2:retrofit"),
+        artifact("com.squareup.retrofit2:converter-protobuf"),
+        artifact("com.squareup.okhttp3:okhttp"),
+        artifact("com.squareup.okhttp3:logging-interceptor"),
+        artifact("com.jakewharton.threetenabp:threetenabp"),
+    ],
+)
+
+kt_jvm_export(
+    name = "exported_tsengine_lib",
+    maven_coordinates = "com.squareup.tinysweeper.tsengine:tsengine:%s" % TSENGINE_VERSION,
+    runtime_deps = [
+        ":tsengine_lib",
+    ],
+)
