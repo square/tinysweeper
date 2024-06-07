@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.tinysweeper.tsengine">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-sdk
+            android:minSdkVersion="24"
+            android:targetSdkVersion="33"/>
+</manifest>

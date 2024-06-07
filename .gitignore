@@ -1,0 +1,81 @@
+# Maven
+target
+pom.xml.*
+release.properties
+gen-external-apklibs
+
+# Gradle
+.gradle
+build/
+!/scripts/**/build
+local.properties
+gradlew.bat
+manifest/gradle-build.manifest.yml
+settings_modules_override.gradle
+/reports/
+
+# Gradle Profiler
+profile-out*
+gradle-user-home
+
+# Bazel
+bazel-*
+tools/bazel-dist
+.ijwb/
+.aswb/
+user.bazelrc
+
+# Other IDEs
+.classpath
+.project
+.settings
+.vscode/
+eclipsebin
+.fleet
+
+# IntelliJ IDEA
+.idea/
+!.idea/vcs.xml
+!.idea/runConfigurations/
+!.idea/scopes/
+*.iml
+*.ipl
+*.ipr
+*.iws
+captures/
+classes/
+idea-classes/
+coverage-error.log
+.shelf/
+thread-dump.zip
+
+# Android
+gen
+bin
+!/scripts/**/bin
+!/tools/**/bin
+project.properties
+out
+.cxx
+
+# Robolectric
+tmp
+
+# Steve Jobs
+.DS_Store
+
+# Emacs
+*~
+.#*
+
+# Vim
+*.sw[op]
+
+# Ignore localization file
+locale-manifest.yml
+
+# Heap dumps
+*.hprof
+
+# Ignore Gradle build output directory
+build

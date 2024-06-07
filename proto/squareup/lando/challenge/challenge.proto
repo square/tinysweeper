@@ -1,0 +1,40 @@
+syntax = 'proto3';
+
+package squareup.lando.service.challenge;
+
+option java_package = "com.squareup.lando.service.challenge";
+
+message ChallengeRequest {
+    enum Platform {
+        UNKNOWN               = 0;
+        IOS_APPATTEST         = 1;
+        ANDROID_PLAYINTEGRITY = 2;
+    };
+    Platform platform = 1;
+
+    /** Any identifiers used upstream for attestation */
+    map<string, string> identifiers = 2;
+}
+
+message ChallengeResponse {
+    bytes nonce = 1;
+
+    /**
+     * Android: Cloud project to bill and fetch keys for play integrity
+     * attestation. Functionally equivalent to the API key.
+     */
+    uint64 play_integrity_cloud_project = 13;
+
+    /**
+     * Timestamp that the nonce was generated.
+     */
+    uint64 nonce_created_at_ms = 5;
+}
+
+service ChallengeService {
+    /**
+     * Endpoint for a device to request an initial nonce and API keys for
+     * an attestation attempt.
+     */
+    rpc Challenge(ChallengeRequest) returns (ChallengeResponse) {};
+}

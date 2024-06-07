@@ -1,0 +1,62 @@
+load("@rules_jvm_external//:defs.bzl", "artifact")
+load("@rules_kotlin//kotlin:kotlin.bzl", "kt_jvm_library")
+load("//testutils:testutils.bzl", "ts_unit_test")
+
+package(default_visibility = ["//visibility:public"])
+
+kt_jvm_library(
+    name = "testutils",
+    srcs = glob(["java/com/tinysweeper/tsengine/testutils/**"]),
+    deps = [
+        "//android/tsengine/src/main:tsengine_lib",
+        artifact("com.jakewharton.threetenabp:threetenabp"),
+        artifact("org.threeten:threetenbp"),
+    ],
+)
+
+ts_unit_test(
+    name = "DetectionTest",
+    srcs = ["java/com/tinysweeper/tsengine/DetectionTest.kt"],
+    deps = [
+        ":testutils",
+        "//android/tsengine/src/main:tsengine_lib",
+        artifact("org.jetbrains.kotlinx:kotlinx-coroutines-test"),
+        artifact("junit:junit"),
+    ],
+)
+
+ts_unit_test(
+    name = "TinysweeperTest",
+    srcs = ["java/com/tinysweeper/tsengine/TinysweeperTest.kt"],
+    deps = [
+        ":testutils",
+        "//android/tsengine/src/main:tsengine_lib",
+        artifact("org.jetbrains.kotlinx:kotlinx-coroutines-test"),
+        artifact("org.mockito.kotlin:mockito-kotlin"),
+        artifact("junit:junit"),
+    ],
+)
+
+ts_unit_test(
+    name = "JitterTimerTest",
+    srcs = ["java/com/tinysweeper/tsengine/JitterTimerTest.kt"],
+    test_class = "com.tinysweeper.tsengine.JitterTimerTest",
+    deps = [
+        ":testutils",
+        "//android/tsengine/src/main:tsengine_lib",
+        artifact("org.jetbrains.kotlinx:kotlinx-coroutines-test"),
+        artifact("junit:junit"),
+    ],
+)
+
+ts_unit_test(
+    name = "PlayIntegrityDetectionTest",
+    srcs = ["java/com/tinysweeper/tsengine/detections/PlayIntegrityDetectionTest.kt"],
+    test_class = "com.tinysweeper.tsengine.detections.PlayIntegrityDetectionTest",
+    deps = [
+        ":testutils",
+        "//android/tsengine/src/main:tsengine_lib",
+        artifact("junit:junit"),
+        artifact("org.mockito.kotlin:mockito-kotlin"),
+    ],
+)
