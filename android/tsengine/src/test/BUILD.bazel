@@ -6,7 +6,7 @@ package(default_visibility = ["//visibility:public"])
 
 kt_jvm_library(
     name = "testutils",
-    srcs = glob(["java/com/tinysweeper/tsengine/testutils/**"]),
+    srcs = glob(["java/com/squareup/tinysweeper/tsengine/testutils/**"]),
     deps = [
         "//android/tsengine/src/main:tsengine_lib",
         artifact("com.jakewharton.threetenabp:threetenabp"),
@@ -16,7 +16,7 @@ kt_jvm_library(
 
 ts_unit_test(
     name = "DetectionTest",
-    srcs = ["java/com/tinysweeper/tsengine/DetectionTest.kt"],
+    srcs = ["java/com/squareup/tinysweeper/tsengine/DetectionTest.kt"],
     deps = [
         ":testutils",
         "//android/tsengine/src/main:tsengine_lib",
@@ -27,7 +27,7 @@ ts_unit_test(
 
 ts_unit_test(
     name = "TinysweeperTest",
-    srcs = ["java/com/tinysweeper/tsengine/TinysweeperTest.kt"],
+    srcs = ["java/com/squareup/tinysweeper/tsengine/TinysweeperTest.kt"],
     deps = [
         ":testutils",
         "//android/tsengine/src/main:tsengine_lib",
@@ -39,8 +39,8 @@ ts_unit_test(
 
 ts_unit_test(
     name = "JitterTimerTest",
-    srcs = ["java/com/tinysweeper/tsengine/JitterTimerTest.kt"],
-    test_class = "com.tinysweeper.tsengine.JitterTimerTest",
+    srcs = ["java/com/squareup/tinysweeper/tsengine/JitterTimerTest.kt"],
+    test_class = "com.squareup.tinysweeper.tsengine.JitterTimerTest",
     deps = [
         ":testutils",
         "//android/tsengine/src/main:tsengine_lib",
@@ -51,8 +51,8 @@ ts_unit_test(
 
 ts_unit_test(
     name = "PlayIntegrityDetectionTest",
-    srcs = ["java/com/tinysweeper/tsengine/detections/PlayIntegrityDetectionTest.kt"],
-    test_class = "com.tinysweeper.tsengine.detections.PlayIntegrityDetectionTest",
+    srcs = ["java/com/squareup/tinysweeper/tsengine/detections/PlayIntegrityDetectionTest.kt"],
+    test_class = "com.squareup.tinysweeper.tsengine.detections.PlayIntegrityDetectionTest",
     deps = [
         ":testutils",
         "//android/tsengine/src/main:tsengine_lib",

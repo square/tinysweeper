@@ -13,7 +13,7 @@ def ts_unit_test(
         name = name,
         srcs = srcs,
         manifest = "//testutils:test_manifest.xml",
-        test_class = "com.tinysweeper.tsengine.%s" % name if test_class == None else test_class,
+        test_class = "com.squareup.tinysweeper.tsengine.%s" % name if test_class == None else test_class,
         deps = deps + [
             artifact("org.robolectric:robolectric"),
             "@rules_robolectric//bazel:android-all",

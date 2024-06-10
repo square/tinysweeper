@@ -1,6 +1,6 @@
 # Tinysweeper
 
-Tinysweeper is a minimal version of the remote attestation system.
+Tinysweeper is a minimal remote attestation system that mostly relies on Platform provided attestation mechanisms with supplemental detections designed to anticipate security needs particularly in the mobile payments space.
 
 It is an independent Android library that can be used to perform device attestation and emit an authenticated record that can be verified on a backend.
 
@@ -11,8 +11,8 @@ It is an independent Android library that can be used to perform device attestat
 In your mobile app, set up the following:
 
 ```kotlin
-import com.tinysweeper.tsengine.Tinysweeper
-import com.tinysweeper.tsengine.defaultRetrofit
+import com.squareup.tinysweeper.tsengine.Tinysweeper
+import com.squareup.tinysweeper.tsengine.defaultRetrofit
 
 var tsengine = Tinysweeper(ctx)
 

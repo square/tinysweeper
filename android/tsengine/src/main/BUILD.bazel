@@ -26,7 +26,7 @@ kt_android_library(
 
 kt_jvm_export(
     name = "exported_tsengine_lib",
-    maven_coordinates = "com.tinysweeper.tsengine:tsengine:%s" % TSENGINE_VERSION,
+    maven_coordinates = "com.squareup.tinysweeper.tsengine:tsengine:%s" % TSENGINE_VERSION,
     runtime_deps = [
         ":tsengine_lib",
     ],
