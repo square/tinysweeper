@@ -1,0 +1,68 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+    pull_request:
+      types: [opened, labeled, unlabeled, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.repository == 'square/tinysweeper' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Bazelisk
+        uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Mount bazel cache  # Optional
+        uses: actions/cache@v4
+        with:
+          path: "~/.cache/bazel"
+          key: bazel
+
+      - name: Configure GPG Key
+        run: |
+          echo -n "$GPG_SIGNING_KEY" | gpg --import
+        env:
+          GPG_SIGNING_KEY: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
+
+      - name: Publish
+        run: bazel run --define "maven_repo=https://oss.sonatype.org/service/local/staging/deploy/maven2" --stamp --define gpg_sign=true //android/tsengine/src/main:exported_tsengine_lib.publish
+        env: 
+          MAVEN_USER: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
+
+  unittests:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'jdkversions') || contains(github.event.pull_request.labels.*.name, 'renovate')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Configure JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Bazelisk
+        uses: bazelbuild/setup-bazelisk@v3
+
+      - name: Run Tests
+        run: ./scripts/bazel_tests.sh
