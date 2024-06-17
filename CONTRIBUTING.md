@@ -30,4 +30,4 @@ squash all pull requests on merge.
 
 
  [cla]: https://spreadsheets.google.com/spreadsheet/viewform?formkey=dDViT2xzUHAwRkI3X3k5Z0lQM091OGc6MQ&ndplr=1
- [bug bounty]: https://github.com/square/master/BUG-BOUNTY.md
+ [bug bounty]: https://github.com/square/tinysweeper/blob/main/BUG-BOUNTY.md
