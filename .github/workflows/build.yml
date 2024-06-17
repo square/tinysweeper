@@ -1,6 +1,7 @@
 name: build
 
 on:
+  workflow_dispatch: # Allowing manual run of this workflow from the Actions tab
   push:
     branches:
       - master

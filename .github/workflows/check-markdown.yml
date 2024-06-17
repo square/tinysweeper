@@ -1,6 +1,7 @@
 name: Check Markdown
 
 on:
+  workflow_dispatch: # Allowing manual run of this workflow from the Actions tab
   pull_request:
     paths:
       - "**.md"
