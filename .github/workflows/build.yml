@@ -42,7 +42,7 @@ jobs:
           GPG_SIGNING_KEY: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
 
       - name: Publish
-        run: bazel run --define "maven_repo=https://oss.sonatype.org/service/local/staging/deploy/maven2" --stamp --define gpg_sign=true //android/tsengine/src/main:exported_tsengine_lib.publish
+        run: bazel run --define "maven_repo=https://s01.oss.sonatype.org/service/local/staging/deploy/maven2" --stamp --define gpg_sign=true //android/tsengine/src/main:exported_tsengine_lib.publish
         env: 
           MAVEN_USER: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
