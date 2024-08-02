@@ -18,6 +18,7 @@ import com.squareup.tinysweeper.tsengine.Detector
 import com.squareup.tinysweeper.tsengine.IdProvider
 import com.squareup.tinysweeper.tsengine.JitterTimer
 import com.squareup.tinysweeper.tsengine.network.ChallengeClient
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.tasks.await
 import org.threeten.bp.Clock
 import kotlin.time.DurationUnit
@@ -42,6 +43,7 @@ class PlayIntegrityDetection(
     JitterTimer(1.toDuration(DurationUnit.MINUTES), 30.toDuration(DurationUnit.SECONDS)),
     clock = clock
   ) {
+  private var tokenProviderLock = Mutex()
   var tokenProvider: StandardIntegrityTokenProvider? = null
   public var lastAttestation: PlayIntegrityAttestation? = null
 
@@ -55,10 +57,16 @@ class PlayIntegrityDetection(
       return
     }
 
-    tokenProvider =
-      integrityManager?.prepareIntegrityToken(
-        PrepareIntegrityTokenRequest.builder().setCloudProjectNumber(cloudProject).build()
-      )?.await()
+    tokenProviderLock.lock()
+    try {
+      tokenProvider =
+        integrityManager
+          ?.prepareIntegrityToken(
+            PrepareIntegrityTokenRequest.builder().setCloudProjectNumber(cloudProject).build()
+          )?.await()
+    } finally {
+      tokenProviderLock.unlock()
+    }
   }
 
   fun supportedAPI(): Boolean {
@@ -72,17 +80,29 @@ class PlayIntegrityDetection(
   // Completes an Interpol Challenge; gets nonce/requesthash.
   suspend fun challenge(): ChallengeResponse? {
     val req =
-      ChallengeRequest.newBuilder()
+      ChallengeRequest
+        .newBuilder()
         .setPlatform(ANDROID_PLAYINTEGRITY)
         .putAllIdentifiers(
           idProviders.associateBy(
             keySelector = { it.getLabel() },
             valueTransform = { it.getId() }
           )
-        )
-        .build()
+        ).build()
     val resp = challengeClient?.challenge(req)
     return resp?.body()
+  }
+
+  suspend fun warmupWithRequest() {
+    var challenge: ChallengeResponse? = challenge()
+
+    if (challenge == null) {
+      return
+    }
+
+    if (tokenProvider == null) {
+      warmup(challenge.playIntegrityCloudProject)
+    }
   }
 
   suspend fun attest(): PlayIntegrityAttestation? {
@@ -100,14 +120,20 @@ class PlayIntegrityDetection(
       return null
     }
 
-    if (tokenProvider == null) {
-      warmup(challenge.playIntegrityCloudProject)
+    tokenProviderLock.lock()
+    try {
+      if (tokenProvider == null) {
+        warmup(challenge.playIntegrityCloudProject)
+      }
+    } finally {
+      tokenProviderLock.unlock()
     }
 
     var gotToken: StandardIntegrityToken?
     val task =
       tokenProvider?.request(
-        StandardIntegrityTokenRequest.builder()
+        StandardIntegrityTokenRequest
+          .builder()
           .setRequestHash(challenge.nonce?.toString("utf-8"))
           .build(),
       )
@@ -118,7 +144,8 @@ class PlayIntegrityDetection(
     }
 
     val attestation =
-      PlayIntegrityAttestation.newBuilder()
+      PlayIntegrityAttestation
+        .newBuilder()
         .setIntegrityNonceCreatedAtMs(challenge.nonceCreatedAtMs)
         .setToken(ByteString.copyFrom(gotToken.token(), "utf-8"))
         .setPackageName(packageName)
@@ -136,7 +163,5 @@ class PlayIntegrityDetection(
     return lastAttestation != null
   }
 
-  override fun toString(): String {
-    return lastAttestation.toString()
-  }
+  override fun toString(): String = lastAttestation.toString()
 }

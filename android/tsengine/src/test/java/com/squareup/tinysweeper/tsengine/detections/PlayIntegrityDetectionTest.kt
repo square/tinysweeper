@@ -131,7 +131,7 @@ internal class PlayIntegrityDetectionTest {
       )
 
     runBlocking {
-      detection.attest()
+      detection.warmupWithRequest()
     }
 
     assertEquals(1, integrityManager.warmupCount)
@@ -140,7 +140,14 @@ internal class PlayIntegrityDetectionTest {
     runBlocking {
       detection.attest()
     }
+
     assertEquals(1, integrityManager.warmupCount)
     assertEquals(2, challengeClient.reqCount)
+
+    runBlocking {
+      detection.attest()
+    }
+    assertEquals(1, integrityManager.warmupCount)
+    assertEquals(3, challengeClient.reqCount)
   }
 }

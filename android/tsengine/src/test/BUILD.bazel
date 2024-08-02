@@ -60,3 +60,15 @@ ts_unit_test(
         artifact("org.mockito.kotlin:mockito-kotlin"),
     ],
 )
+
+ts_unit_test(
+    name = "AndroidKeyAttestorTest",
+    srcs = ["java/com/squareup/tinysweeper/tsengine/detections/AndroidKeyAttestorTest.kt"],
+    test_class = "com.squareup.tinysweeper.tsengine.detections.AndroidKeyAttestorTest",
+    deps = [
+        ":testutils",
+        "//android/tsengine/src/main:tsengine_lib",
+        artifact("junit:junit"),
+        artifact("org.mockito.kotlin:mockito-kotlin"),
+    ],
+)
