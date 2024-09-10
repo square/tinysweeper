@@ -66,6 +66,6 @@ message Attestation {
     Identifier         identifier = 2;
     repeated Detection detections = 3;
 
-    PlayIntegrityAttestation integrity_token = 10;
-    repeated bytes keystore_certificate_chain = 11;
+    PlayIntegrityAttestation integrity_token            = 10;
+    repeated bytes           keystore_certificate_chain = 11;
 }

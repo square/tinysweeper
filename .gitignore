@@ -18,13 +18,6 @@ settings_modules_override.gradle
 profile-out*
 gradle-user-home
 
-# Bazel
-bazel-*
-tools/bazel-dist
-.ijwb/
-.aswb/
-user.bazelrc
-
 # Other IDEs
 .classpath
 .project

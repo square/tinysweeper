@@ -16,19 +16,19 @@ import com.squareup.tinysweeper.tsengine.defaultRetrofit
 
 var tsengine = Tinysweeper(ctx)
 
-/* 
+/*
  * Alternatively, you can supply your own retrofit instance or endpoint.
  * This endpoint provides a random Play Integrity nonce that's derived from your
- * parameters. It should implement the Challenge() RPC endpoint in 
+ * parameters. It should implement the Challenge() RPC endpoint in
  * `proto/squareup/lando/challenge/challenge.proto`.
- */ 
+ */
 // var tsengine = Tinysweeper(ctx, defaultRetrofit(endpoint))
 
 tsengine?.start()
 
 fun someAction() {
   val attestation = tsengine.getAttestationResult().toByteString()
-  
+
   // Include/send the attestation object to your backend with requests.
 }
 ```
@@ -65,7 +65,12 @@ func Attest(serialized bytes[]) {
 
 # Development
 
-We use bazel to build the project. Install the [Bazel plugin for android studio](https://ij.bazel.build/docs/bazel-plugin.html) and import our [.bazelproject](./bazelproject) to get started.
+Import the project into Android Studio to get started. Run the tests from the command line with:
+
+```
+$ cd android
+$ ./gradlew test
+```
 
 ## Writing your own Detection
 

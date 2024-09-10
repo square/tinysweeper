@@ -18,8 +18,8 @@ Code Contributions
 Get working code on a personal branch with tests passing before you submit a PR:
 
 ```
-$ bazel test //android/tsengine/src/test:all
-
+$ cd android
+$ ./gradlew test
 ```
 
 Please make every effort to follow existing conventions and style in order to keep the code as
